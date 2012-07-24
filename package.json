@@ -1,0 +1,28 @@
+{
+  "name": "safedir",
+  "description": "Find directory files, and return an array",
+  "version": "0.2.0",
+  "author": "Andreas Madsen <amwebdk@gmail.com>",
+  "scripts": {
+    "test": "vows test/simple/* --spec --isolate"
+  },
+  "main": "./safedir.js",
+  "repository" : {
+    "type": "git",
+    "url": "git://github.com/AndreasMadsen/safedir.git"
+  },
+  "keywords": [
+    "dirread",
+    "absolute",
+    "filepath",
+    "content"
+  ],
+  "devDependencies": {
+    "vows": "0.6.x"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "0.6 || 0.8",
+    "npm": "1"
+  }
+}
