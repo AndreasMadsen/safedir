@@ -2,12 +2,16 @@
 var fs = require('fs');
 var path = require('path');
 
-module.exports = function directoryMap(dirname /*, showHidden, callback */) {
+module.exports = function directoryMap(dirname /*, settings, callback */) {
 
   // get arguments
   dirname = path.resolve(dirname);
   var callback = arguments[arguments.length - 1];
-  var showHidden = arguments.length === 3 ? arguments[1] : false;
+  var settings = arguments.length === 3 ? arguments[1] : {};
+
+  // set default settings
+  settings.safe = settings.safe === undefined ? true : !!settings.safe;
+  settings.hidden = settings.hidden === undefined ? false : !!settings.hidden;
 
   // not yet resoled directory/files
   var query = [];
@@ -35,7 +39,7 @@ module.exports = function directoryMap(dirname /*, showHidden, callback */) {
 
         if (!stat.isDirectory()) {
           query.splice(query.indexOf(filepath), 1);
-          result.push( filepath.slice(dirname.length) );
+          result.push( settings.safe ? filepath.slice(dirname.length) : filepath );
           return doCallback(null);
         }
 
@@ -43,7 +47,7 @@ module.exports = function directoryMap(dirname /*, showHidden, callback */) {
           if (error) return doCallback(error);
 
           // remove hidden files
-          if (showHidden === false) {
+          if (settings.hidden === false) {
             files = files.filter(function (name) {
               return name[0] !== '.';
             });

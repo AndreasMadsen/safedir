@@ -10,16 +10,15 @@ npm install safedir
 
 The safedir module do only return one function `var safedir = require('safedir');`.
 
-### safedir(path, [showHidden=false], callback)
+### safedir(path, [options], callback)
 
-The function takes 3 arguments, `showHidden` is optional and is by default `false`.
+The function takes 3 arguments, but `options` is optional.
 
 * `path`: the filepath
-* `showHidden`: if true files there start with a `.` will be included too.
+* `options`: an settings object, the following properties can be set
+  * `safe` (default: ture): if true, all filepath are relative to `path` but start with a `/`.
+  * `hidden` (default: false): if true, hidden file will be included in the result `list`.
 * `callback`: called with an `error` and a `list` argument.
-
-It is improtant to note that the filepaths given in `list`, are relative to `path`
-but start with a `/`.
 
 ##License
 

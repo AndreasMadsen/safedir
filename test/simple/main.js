@@ -4,8 +4,11 @@
  */
 
 var vows = require('vows'),
+    path = require('path'),
     assert = require('assert'),
     safedir = require('../../safedir.js');
+
+var fixtureDir = path.resolve(__dirname, '../fixture/');
 
 function unorderEqual(got, expected) {
   var copy = got.slice(0);
@@ -30,7 +33,7 @@ vows.describe('testing safedir').addBatch({
 
   'when reading an directroy': {
     topic: function () {
-      safedir('test/fixture/', this.callback);
+      safedir(fixtureDir, this.callback);
     },
 
     'it returns a list of relative paths': function (error, list) {
@@ -48,7 +51,7 @@ vows.describe('testing safedir').addBatch({
 
   'when reading an directroy and its hidden files': {
     topic: function () {
-      safedir('test/fixture/', true, this.callback);
+      safedir(fixtureDir, { hidden: true }, this.callback);
     },
 
     'it returns a list of relative paths': function (error, list) {
@@ -62,6 +65,28 @@ vows.describe('testing safedir').addBatch({
         '/deep/deep/file.txt',
         '/deep/deep/.hidden.txt'
       ]);
+    }
+  },
+
+  'when reading an directroy in usafe mode': {
+    topic: function () {
+      safedir(fixtureDir, { safe: false }, this.callback);
+    },
+
+    'it returns a list of relative paths': function (error, list) {
+      assert.ifError(error);
+
+      var expected = [
+        '/file_1.txt',
+        '/file_2.txt',
+        '/deep/file_1.txt',
+        '/deep/file_2.txt',
+        '/deep/deep/file.txt'
+      ];
+
+      unorderEqual(list, expected.map(function (filepath) {
+        return path.resolve(fixtureDir, './' + filepath);
+      }));
     }
   }
 }).exportTo(module);
